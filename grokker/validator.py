@@ -9,6 +9,13 @@ def str_validator(directive_name, value):
             "The '%s' directive can only be called with a "
             "unicode or str argument." % directive_name)
 
+def int_validator(directive_name, value):
+    if not isinstance(value, int):
+        raise GrokkerValidationError(
+            "The '%s' directive can only be called with a "
+            "integer argument." % directive_name)
+
+
 def isclass(value):
     """We cannot use ``inspect.isclass`` because it will return True
     for interfaces (zope.interface)"""
