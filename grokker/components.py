@@ -1,8 +1,10 @@
 import venusian
 
+
 class DirectiveValidationError(Exception):
     def __init__(self, msg):
         self.msg = msg
+
 
 def make_arguments(directives, ob):
     result = {}
@@ -12,6 +14,7 @@ def make_arguments(directives, ob):
             continue
         result[directive.name] = value
     return result
+
 
 class MetaGrokker(object):
     category = None
@@ -29,7 +32,9 @@ class MetaGrokker(object):
             return wrapped
         return wrapped_grokker
 
+
 grokker = MetaGrokker()
+
 
 class BaseDirective(object):
     def __init__(self, name, module_name, converter=None, validator=None,
@@ -47,7 +52,8 @@ class BaseDirective(object):
         if self.converter is not None:
             result = self.converter(result)
         return result
-    
+
+
 class Directive(BaseDirective):
     
     def __call__(self, value):
@@ -57,6 +63,7 @@ class Directive(BaseDirective):
             self.set_policy(wrapped, self.dotted_name, value)
             return wrapped
         return wrapper
+
 
 class ArgsDirective(BaseDirective):
     
@@ -69,12 +76,14 @@ class ArgsDirective(BaseDirective):
             return wrapped
         return wrapper
 
+
 def list_set_policy(obj, name, value):
     l = obj.__dict__.get(name, None)
     if l is None:
         l = []
         setattr(obj, name, l)
     l.append(value)
+
 
 def list_get_policy(obj, name, default):
     mro = getattr(obj, 'mro', None)
@@ -90,7 +99,7 @@ def list_get_policy(obj, name, default):
         result_flattened.extend(entry)
     return result_flattened
 
+
 directive = Directive('directive', __name__,
                       set_policy=list_set_policy,
                       get_policy=list_get_policy)
-
