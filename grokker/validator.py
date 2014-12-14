@@ -1,13 +1,22 @@
-import types
+try:
+    from types import ClassType
+except ImportError:
+    class C:
+        pass
+
+    ClassType = type(C)
+
 
 class GrokkerValidationError(Exception):
     pass
 
+
 def str_validator(directive_name, value):
-    if not isinstance(value, basestring):
+    if not isinstance(value, (str, bytes)):
         raise GrokkerValidationError(
             "The '%s' directive can only be called with a "
             "unicode or str argument." % directive_name)
+
 
 def int_validator(directive_name, value):
     if not isinstance(value, int):
@@ -19,8 +28,9 @@ def int_validator(directive_name, value):
 def isclass(value):
     """We cannot use ``inspect.isclass`` because it will return True
     for interfaces (zope.interface)"""
-    return isinstance(value, (types.ClassType, type))
-     
+    return isinstance(value, (ClassType, type))
+
+
 def class_validator(directive_name, value):
     if not isclass(value):
         raise GrokkerValidationError(
