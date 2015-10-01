@@ -7,12 +7,17 @@ except ImportError:
     ClassType = type(C)
 
 
+import sys
+if sys.version > '3':
+    unicode = str
+
+
 class GrokkerValidationError(Exception):
     pass
 
 
 def str_validator(directive_name, value):
-    if not isinstance(value, (str, bytes)):
+    if not isinstance(value, (unicode, str, bytes)):
         raise GrokkerValidationError(
             "The '%s' directive can only be called with a "
             "unicode or str argument." % directive_name)
