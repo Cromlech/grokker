@@ -2,7 +2,7 @@ import os
 from setuptools import setup, find_packages
 
 setup(name='grokker',
-      version = '0.1dev',
+      version = '0.1.dev0',
       description="A reformulation of Martian based on Venusian.",
       author="Martijn Faassen",
       author_email="faassen@startifact.com",
